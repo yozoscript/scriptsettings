@@ -2,7 +2,7 @@
 // @name        异世界动漫 功能优化
 // @description 为异世界动漫进行界面优化，增加宽屏模式（默认启动），增加弹幕屏蔽词
 // @namespace   gqdmStyle
-// @version     1.1.0
+// @version     1.1.1
 // @author      Yozo
 // @match       https://www.gqdm.net/index.php/vod/play/*
 // @match       https://bf.sbdm.cc/*
@@ -113,31 +113,6 @@ var exec = async function () {
             }
         })
     }
-    else if (location.host == "yozoscript.github.io"){
-        while(!unsafeWindow.mdui){
-           console.debug('cannot find mdui, wait one second')
-           await sleep(1000)
-        }
-        const $ = mdui.$
-        //BanList
-        var banstr = BanList.join(';')
-        $('#banListStr')[0].value = banstr
-
-        $('#rootWidth')[0].value = rootWidth
-
-        $('#saveBtn').on('click', e => {
-            if (!$('form')[0].checkValidity()){
-                mdui.snackbar('保存失败，请检查格式或漏填')
-                return
-            }
-            var list = $('#banListStr')[0].value.replaceAll("；",";").split(';')
-			list = list.filter((x) => {if (x == null || x.length == 0) return false; return true;})
-            GM_setValue('BanList', list)
-            var width = parseInt(($('#rootWidth')[0].value).toString())
-            GM_setValue('rootWidth', width)
-            mdui.snackbar('保存成功')
-        })
-    }
 }
 var exec2 = async function () {
     'use strict';
@@ -150,7 +125,7 @@ var exec2 = async function () {
            await sleep(1000)
         }
         const $ = mdui.$
-        //BanList
+        
         var banstr = BanList.join(';')
         $('#banListStr')[0].value = banstr
 
@@ -162,7 +137,7 @@ var exec2 = async function () {
                 return
             }
             var list = $('#banListStr')[0].value.replaceAll("；",";").split(';')
-			list = list.filter((x) => {if (x == null || x.length == 0) return false; return true;})
+            list = list.filter((x) => {if (x == null || x.length == 0) return false; return true;})
             GM_setValue('BanList', list)
             var width = parseInt(($('#rootWidth')[0].value).toString())
             GM_setValue('rootWidth', width)
