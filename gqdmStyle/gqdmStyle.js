@@ -7,7 +7,6 @@
 // @match       https://www.gqdm.net/index.php/vod/play/*
 // @match       https://bf.sbdm.cc/*
 // @match       https://yozoscript.github.io/scriptsettings/gqdmStyle*
-// @include       https://yozoscript.github.io/scriptsettings/gqdmStyle*
 // @grant       unsafeWindow
 // @grant       GM_setValue
 // @grant       GM_getValue
