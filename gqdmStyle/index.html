@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>异世界动漫 功能优化</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link
+            rel="stylesheet"
+            href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/mdui/1.0.2/css/mdui.min.css"
+        />
+        <meta name="referrer" content="no-referrer">
+    </head>
+    <body class="mdui-appbar-with-toolbar mdui-theme-layout-auto mdui-theme-accent-pink mdui-theme-primary-indigo" style="padding-bottom: 10%;">
+        <div class="mdui-appbar mdui-appbar-fixed">
+            <div class="mdui-toolbar mdui-color-indigo">
+              <span class="mdui-typo-title">异世界动漫 功能优化</span>
+              <div class="mdui-toolbar-spacer"></div>
+              <span>本界面适用版本: v1.1.0+</span>
+            </div>
+          </div>
+        <div class="mdui-container">
+            <form>
+                <h3>屏蔽词列表</h3>
+                <h4>屏蔽词，用 “;” 分割</h4>
+				<h4>可以使用正则表达式，例如“你(.*)了”可以匹配“你傻了”或者“你来了”等，使用方式请上网搜索</h4>
+                <div class="mdui-textfield">
+                    <textarea id="banListStr" class="mdui-textfield-input" placeholder="输入词语或正则表达式" ></textarea>
+                </div>
+                <h3>其他设定</h3>
+                <div class="mdui-row-md-3">
+                    <div class="mdui-col">
+                        <div class="mdui-textfield">
+                            <label class="mdui-textfield-label">播放器大小，默认70</label>
+                            <input id="rootWidth" class="mdui-textfield-input" type="number" step="1" min="10" max="100"/>
+                            <div class="mdui-textfield-error">数字必须为 10 ~ 100 之间</div>
+                        </div>
+                    </div>
+                </div>
+				
+				<button id="saveBtn" class="mdui-btn mdui-ripple mdui-color-theme">保存设定</button>
+            </form>
+        </div>
+        <script
+            src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/mdui/1.0.2/js/mdui.min.js"
+        ></script>
+    </body>
+    <script>
+    </script>
+</html>
