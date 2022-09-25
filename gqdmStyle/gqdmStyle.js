@@ -2,7 +2,7 @@
 // @name        异世界动漫 功能优化
 // @description 为异世界动漫进行界面优化，增加宽屏模式（默认启动），增加弹幕屏蔽词
 // @namespace   gqdmStyle
-// @version     1.1.1
+// @version     1.1.2
 // @author      Yozo
 // @match       https://www.gqdm.net/index.php/vod/play/*
 // @match       https://bf.sbdm.cc/*
@@ -63,6 +63,8 @@ var exec = async function () {
                         document.getElementsByClassName("MacPlayer embed-responsive embed-responsive-16by9")[0].style.setProperty("padding-top", "45%")
                     }
                 }
+            } else if (event.data == "openBanSetting") {
+                window.open("https://yozoscript.github.io/scriptsettings/gqdmStyle/")
             }
         })
         window.window.postMessage("kuanping")
@@ -111,6 +113,14 @@ var exec = async function () {
             document.getElementById("enterkuan").onclick = () => {
                 window.parent.postMessage("kuanping", "*")
             }
+            $("button.leleplayer-comment-setting-icon").after(`<button id="setBanlist" class="leleplayer-icon leleplayer-comment-setting-icon" data-balloon="屏蔽词设置" data-balloon-pos="up">
+            <span class="leleplayer-icon-content"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><circle cx="11" cy="11" r="2"></circle>
+            <path d="M19.164 8.861L17.6 8.6a6.978 6.978 0 00-1.186-2.099l.574-1.533a1 1 0 00-.436-1.217l-1.997-1.153a1.001 1.001 0 00-1.272.23l-1.008 1.225a7.04 7.04 0 00-2.55.001L8.716 2.829a1 1 0 00-1.272-.23L5.447 3.751a1 1 0 00-.436 1.217l.574 1.533A6.997 6.997 0 004.4 8.6l-1.564.261A.999.999 0 002 9.847v2.306c0 .489.353.906.836.986l1.613.269a7 7 0 001.228 2.075l-.558 1.487a1 1 0 00.436 1.217l1.997 1.153c.423.244.961.147 1.272-.23l1.04-1.263a7.089 7.089 0 002.272 0l1.04 1.263a1 1 0 001.272.23l1.997-1.153a1 1 0 00.436-1.217l-.557-1.487c.521-.61.94-1.31 1.228-2.075l1.613-.269a.999.999 0 00.835-.986V9.847a.999.999 0 00-.836-.986zM11 15a4 4 0 110-8 4 4 0 010 8z"></path>
+            </svg></span>
+        </button>`)
+            document.getElementById("setBanlist").onclick = () => {
+                window.parent.postMessage("openBanSetting", "*")
+            }
         })
     }
 }
@@ -125,7 +135,7 @@ var exec2 = async function () {
            await sleep(1000)
         }
         const $ = mdui.$
-        
+
         var banstr = BanList.join(';')
         $('#banListStr')[0].value = banstr
 
@@ -136,9 +146,10 @@ var exec2 = async function () {
                 mdui.snackbar('保存失败，请检查格式或漏填')
                 return
             }
-            var list = $('#banListStr')[0].value.replaceAll("；",";").split(';')
+            var list = $('#banListStr')[0].value.replaceAll("；",";").replaceAll("\n",";").split(';')
             list = list.filter((x) => {if (x == null || x.length == 0) return false; return true;})
             GM_setValue('BanList', list)
+            $('#banListStr')[0].value = list.join(';')
             var width = parseInt(($('#rootWidth')[0].value).toString())
             GM_setValue('rootWidth', width)
             mdui.snackbar('保存成功')
