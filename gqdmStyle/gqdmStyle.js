@@ -2,7 +2,7 @@
 // @name        异世界动漫 功能优化
 // @description 为异世界动漫进行界面优化，增加宽屏模式（默认启动），增加弹幕屏蔽词
 // @namespace   gqdmStyle
-// @version     1.1.2
+// @version     1.1.3
 // @author      Yozo
 // @match       https://www.gqdm.net/index.php/vod/play/*
 // @match       https://bf.sbdm.cc/*
@@ -25,9 +25,8 @@ var rootWidth = GM_getValue('rootWidth', 70)
 var isKuan = false
 var exec = async function () {
     'use strict';
-    BanList = GM_getValue('BanList', DefaultList)
-    rootWidth = GM_getValue('rootWidth', 70)
     if (location.host == "www.gqdm.net" || location.host == "gqdm.net"){
+        rootWidth = GM_getValue('rootWidth', 70)
         window.window.addEventListener('message', function(event) {
             if (event.data == "kuanping") {
                 if (!isKuan) {
@@ -71,6 +70,10 @@ var exec = async function () {
 
     }
     else if (location.host == "bf.sbdm.cc"){
+        BanList = GM_getValue('BanList', DefaultList)
+        setInterval(() => {
+            BanList = GM_getValue('BanList', DefaultList)
+        }, 30000)
         domChange("player", () => {
           var pp = document.getElementById("player_pause")
           if(pp) pp.setAttribute("style", "display: none;")
@@ -138,6 +141,7 @@ var exec2 = async function () {
 
         var banstr = BanList.join(';')
         $('#banListStr')[0].value = banstr
+        $('#banListStr')[0].style.height = "inherit"
 
         $('#rootWidth')[0].value = rootWidth
 
@@ -147,7 +151,7 @@ var exec2 = async function () {
                 return
             }
             var list = $('#banListStr')[0].value.replaceAll("；",";").replaceAll("\n",";").split(';')
-            list = list.filter((x) => {if (x == null || x.length == 0) return false; return true;})
+            list = uniq(list.filter((x) => {if (x == null || x.length == 0) return false; return true;}))
             GM_setValue('BanList', list)
             $('#banListStr')[0].value = list.join(';')
             var width = parseInt(($('#rootWidth')[0].value).toString())
@@ -198,4 +202,20 @@ function domChangeClass(domClass, callback, runIm) {
 
 async function sleep(ms){
    return new Promise((res,) => setTimeout(res,ms))
+}
+function uniq(array) {
+    let temp = [];
+    let index = [];
+    let l = array.length;
+    for(let i = 0; i < l; i++) {
+        for(let j = i + 1; j < l; j++){
+            if (array[i] === array[j]){
+                i++;
+                j = i;
+            }
+        }
+        temp.push(array[i]);
+        index.push(i);
+    }
+    return temp;
 }
