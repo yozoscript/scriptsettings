@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name        异世界动漫 功能优化
-// @description 为异世界动漫进行界面优化，增加宽屏模式（默认启动），增加弹幕屏蔽词
+// @description 为异世界动漫进行界面优化，增加宽屏模式（默认启动），增加弹幕屏蔽词，增加集数点击记录
 // @namespace   gqdmStyle
-// @version     1.1.3
+// @version     1.1.4
 // @author      Yozo
 // @match       https://www.gqdm.net/index.php/vod/play/*
+// @match       https://www.gqdm.net/index.php/vod/detail/*
 // @match       https://bf.sbdm.cc/*
 // @match       https://yozoscript.github.io/scriptsettings/gqdmStyle*
 // @grant       unsafeWindow
@@ -26,47 +27,62 @@ var isKuan = false
 var exec = async function () {
     'use strict';
     if (location.host == "www.gqdm.net" || location.host == "gqdm.net"){
-        rootWidth = GM_getValue('rootWidth', 70)
-        window.window.addEventListener('message', function(event) {
-            if (event.data == "kuanping") {
-                if (!isKuan) {
-                    isKuan = true
-                    if (document.getElementsByClassName("right_row fr hidden_xs hidden_mi").length > 0) {
-                        document.getElementsByClassName("container")[0].setAttribute("style", `width:${rootWidth}%;`)
-                        document.getElementsByClassName("right_row fr hidden_xs hidden_mi")[0].setAttribute("style", document.getElementsByClassName("right_row fr hidden_xs hidden_mi")[0].getAttribute("style") + "display:none;")
-                        document.getElementsByClassName("left_row fl")[0].setAttribute("style", "width: 100%;")
-                        document.getElementsByClassName("left_row fl")[0].children[0].setAttribute("style", "height: 100%;")
-                        document.getElementsByClassName("MacPlayer embed-responsive")[0].style.setProperty("padding-block", "92px 56%")
-                        document.getElementsByClassName("MacPlayer embed-responsive")[0].style.removeProperty("padding-bottom")
-                    }
+        if (location.href.startsWith("https://www.gqdm.net/index.php/vod/play/id/")) {
+            rootWidth = GM_getValue('rootWidth', 70)
+            window.window.addEventListener('message', function(event) {
+                if (event.data == "kuanping") {
+                    if (!isKuan) {
+                        isKuan = true
+                        if (document.getElementsByClassName("right_row fr hidden_xs hidden_mi").length > 0) {
+                            document.getElementsByClassName("container")[0].setAttribute("style", `width:${rootWidth}%;`)
+                            document.getElementsByClassName("right_row fr hidden_xs hidden_mi")[0].setAttribute("style", document.getElementsByClassName("right_row fr hidden_xs hidden_mi")[0].getAttribute("style") + "display:none;")
+                            document.getElementsByClassName("left_row fl")[0].setAttribute("style", "width: 100%;")
+                            document.getElementsByClassName("left_row fl")[0].children[0].setAttribute("style", "height: 100%;")
+                            document.getElementsByClassName("MacPlayer embed-responsive")[0].style.setProperty("padding-block", "92px 56%")
+                            document.getElementsByClassName("MacPlayer embed-responsive")[0].style.removeProperty("padding-bottom")
+                        }
 
-                    if (document.getElementById("root")) {
-                        document.getElementById("root").setAttribute("style", "width: 85%;")
-                        document.getElementById("ageframediv").attributes[1].value = "width: 85%;"
-                        document.getElementsByClassName("MacPlayer embed-responsive embed-responsive-16by9")[0].style.setProperty("padding-top", "56%")
-                    }
-                } else {
-                    isKuan = false
-                    if (document.getElementsByClassName("right_row fr hidden_xs hidden_mi").length > 0) {
-                        document.getElementsByClassName("container")[0].removeAttribute("style")
-                        document.getElementsByClassName("right_row fr hidden_xs hidden_mi")[0].setAttribute("style", document.getElementsByClassName("right_row fr hidden_xs hidden_mi")[0].getAttribute("style").replace("display:none;",""))
-                        document.getElementsByClassName("left_row fl")[0].removeAttribute("style")
-                        document.getElementsByClassName("left_row fl")[0].children[0].removeAttribute("style")
-                        document.getElementsByClassName("MacPlayer embed-responsive")[0].style.setProperty("padding-bottom", "56.25%")
-                        document.getElementsByClassName("MacPlayer embed-responsive")[0].style.removeProperty("padding-block")
-                    }
+                        if (document.getElementById("root")) {
+                            document.getElementById("root").setAttribute("style", "width: 85%;")
+                            document.getElementById("ageframediv").attributes[1].value = "width: 85%;"
+                            document.getElementsByClassName("MacPlayer embed-responsive embed-responsive-16by9")[0].style.setProperty("padding-top", "56%")
+                        }
+                    } else {
+                        isKuan = false
+                        if (document.getElementsByClassName("right_row fr hidden_xs hidden_mi").length > 0) {
+                            document.getElementsByClassName("container")[0].removeAttribute("style")
+                            document.getElementsByClassName("right_row fr hidden_xs hidden_mi")[0].setAttribute("style", document.getElementsByClassName("right_row fr hidden_xs hidden_mi")[0].getAttribute("style").replace("display:none;",""))
+                            document.getElementsByClassName("left_row fl")[0].removeAttribute("style")
+                            document.getElementsByClassName("left_row fl")[0].children[0].removeAttribute("style")
+                            document.getElementsByClassName("MacPlayer embed-responsive")[0].style.setProperty("padding-bottom", "56.25%")
+                            document.getElementsByClassName("MacPlayer embed-responsive")[0].style.removeProperty("padding-block")
+                        }
 
-                    if (document.getElementById("root")) {
-                        document.getElementById("root").removeAttribute("style")
-                        document.getElementById("ageframediv").attributes[1].value = "width: 980px; height: 540px;"
-                        document.getElementsByClassName("MacPlayer embed-responsive embed-responsive-16by9")[0].style.setProperty("padding-top", "45%")
+                        if (document.getElementById("root")) {
+                            document.getElementById("root").removeAttribute("style")
+                            document.getElementById("ageframediv").attributes[1].value = "width: 980px; height: 540px;"
+                            document.getElementsByClassName("MacPlayer embed-responsive embed-responsive-16by9")[0].style.setProperty("padding-top", "45%")
+                        }
                     }
+                } else if (event.data == "openBanSetting") {
+                    window.open("https://yozoscript.github.io/scriptsettings/gqdmStyle/")
                 }
-            } else if (event.data == "openBanSetting") {
-                window.open("https://yozoscript.github.io/scriptsettings/gqdmStyle/")
+            })
+            window.window.postMessage("kuanping")
+
+            let vid = location.href.split("/")[7];
+            let sid = location.href.split("/")[11].split(".")[0];
+            GM_setValue("videoRecord" + vid + "_" + sid, 1);
+        } else if (location.href.startsWith("https://www.gqdm.net/index.php/vod/detail/id/")) {
+            let vid = location.href.split("/")[7].split(".")[0];
+            for (let i = 0; i < document.getElementsByClassName("content_playlist clearfix")[1].childElementCount; i++) {
+                let child = document.getElementsByClassName("content_playlist clearfix")[1].children[i].firstChild;
+                let sid = child.href.split("/")[11].split(".")[0];
+                if (GM_getValue("videoRecord" + vid + "_" + sid, 0) > 0) {
+                    child.setAttribute("style", "color: #787878;background: #464646;")
+                }
             }
-        })
-        window.window.postMessage("kuanping")
+        }
 
     }
     else if (location.host == "bf.sbdm.cc"){
@@ -160,10 +176,36 @@ var exec2 = async function () {
         })
     }
 }
+var exec3 = async function () {
+    'use strict';
+    if (location.host == "www.gqdm.net" || location.host == "gqdm.net"){
+        if (location.href.startsWith("https://www.gqdm.net/index.php/vod/play/id/")) {
+            let vid = location.href.split("/")[7];
+            let sid = location.href.split("/")[11].split(".")[0];
+            GM_setValue("videoRecord" + vid + "_" + sid, 1);
+        } else if (location.href.startsWith("https://www.gqdm.net/index.php/vod/detail/id/")) {
+            let vid = location.href.split("/")[7].split(".")[0];
+            var _ex = setInterval(() => {
+                if (document.getElementsByClassName("content_playlist clearfix").length > 1) {
+                    clearInterval(_ex);
+                    for (let i = 0; i < document.getElementsByClassName("content_playlist clearfix")[1].childElementCount; i++) {
+                        let child = document.getElementsByClassName("content_playlist clearfix")[1].children[i].firstChild;
+                        let sid = child.href.split("/")[11].split(".")[0];
+                        if (GM_getValue("videoRecord" + vid + "_" + sid, 0) > 0) {
+                            child.setAttribute("style", "color: #787878;background: #464646;")
+                        }
+                    }
+                }
+            }, 100);
+        }
+
+    }
+}
 onload = () => {
     exec();
 }
 exec2().catch(console.error);
+exec3().catch(console.error);
 
 function domChange(domId, callback, runIm) {
     // select the target node
