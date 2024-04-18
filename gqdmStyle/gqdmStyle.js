@@ -9,6 +9,7 @@
 // @match       https://www.lldm.net/index.php/vod/play/*
 // @match       https://www.lldm.net/index.php/vod/detail/*
 // @match       https://bf.sbdm.cc/*
+// @match       https://bf.mmiku.net/*
 // @match       https://yozoscript.github.io/scriptsettings/gqdmStyle*
 // @grant       unsafeWindow
 // @grant       GM_setValue
@@ -87,7 +88,7 @@ var exec = async function () {
         }
 
     }
-    else if (location.host == "bf.sbdm.cc"){
+    else if (location.host == "bf.sbdm.cc" || location.host == "bf.mmiku.net"){
         BanList = GM_getValue('BanList', DefaultList)
         setInterval(() => {
             BanList = GM_getValue('BanList', DefaultList)
