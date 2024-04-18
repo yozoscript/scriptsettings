@@ -2,7 +2,7 @@
 // @name        异世界动漫 功能优化
 // @description 为异世界动漫进行界面优化，增加宽屏模式（默认启动），增加弹幕屏蔽词，增加集数点击记录
 // @namespace   gqdmStyle
-// @version     1.1.5
+// @version     1.1.6
 // @author      Yozo
 // @match       https://www.gqdm.net/index.php/vod/play/*
 // @match       https://www.gqdm.net/index.php/vod/detail/*
@@ -18,6 +18,8 @@
 // @run-at      document-start
 // @website     https://yozoscript.github.io/scriptsettings/gqdmStyle
 // @homepage    https://yozoscript.github.io/scriptsettings/gqdmStyle
+// @downloadURL https://update.greasyfork.org/scripts/451104/%E5%BC%82%E4%B8%96%E7%95%8C%E5%8A%A8%E6%BC%AB%20%E5%8A%9F%E8%83%BD%E4%BC%98%E5%8C%96.user.js
+// @updateURL https://update.greasyfork.org/scripts/451104/%E5%BC%82%E4%B8%96%E7%95%8C%E5%8A%A8%E6%BC%AB%20%E5%8A%9F%E8%83%BD%E4%BC%98%E5%8C%96.meta.js
 // ==/UserScript==
 
 const DefaultList = [
